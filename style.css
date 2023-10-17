@@ -1,0 +1,150 @@
+@import url('https://fonts.googleapis.com/css2?family=Barlow:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3&display=swap');
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: #e6f8ef;
+}
+
+ul {
+    list-style: none;
+    display: grid;
+    position: inherit;
+}
+
+
+#ch {
+    display: none;
+}
+
+#ch:checked ~ .content {
+    display: block;
+}
+#ch:checked ~ label {
+    display: none;
+}
+
+/* content,label -> sibling of ch */
+
+.content {
+    display: none;
+}
+
+.msglabel {
+    display: inline-block;
+    cursor: pointer;
+    color: #fff;
+    background-color: rgb(72, 113, 97);
+    padding: 3px 13px;
+    border-radius: 3px;
+    margin-top: 2px;
+    max-width: fit-content;
+}
+
+.footer-wrappper .footer-area p {
+    color: #305534;
+    font-size: 18px;
+    margin-bottom: 21px;
+    line-height: 1.8
+}
+
+.footer-wrappper .footer-area p {
+    padding: 0
+}
+
+.footer-wrappper .footer-area .footer-tittle h4 {
+    font-family: 'Barlow', sans-serif;
+    color: #305534;
+    font-size: 20px;
+    margin-bottom: 24px;
+    font-weight: 700;
+}
+
+.footer-wrappper .footer-area .footer-tittle ul {
+    list-style: none;
+    padding-inline-start: 0;
+}
+
+.footer-wrappper .footer-area .footer-tittle ul li {
+    margin-bottom: 15px;
+}
+
+    .footer-wrappper .footer-area .footer-tittle ul li a {
+        color: #305534;
+        font-family: 'Source Sans 3', sans-serif;
+        font-weight: 400;
+        font-size: 18px;
+        text-decoration: underline transparent;
+    }
+
+        .footer-wrappper .footer-area .footer-tittle ul li a:hover {
+            color: #305534;
+            text-decoration: underline
+        }
+
+    .footer-wrappper .footer-area .footer-tittle ul li span {
+        color: red
+    }
+
+.footer-wrappper .footer-area .footer-tittle p {
+    color: #305534;
+    font-size: 18px
+}
+
+.blink-animation {
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0% { visibility: visible; }
+    50% { visibility: hidden; }
+    100% { visibility: hidden; }
+}  
+
+.fa-level-up-alt {
+    color: #fff;
+}
+
+footer p {
+    margin-left: 5px;
+}
+
+footer a {
+    text-decoration: none;
+    color: #00880F;
+}
+
+footer p i {
+    color: #00880F
+}
+
+
+.scrollTop {
+    position: fixed;
+    bottom: 800px;
+    right: 40px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #00880F;
+    color: #fff;
+    font-size: 23px;
+    text-align: center;
+    line-height: 50px;
+    cursor: pointer;
+    z-index: 100000;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.5s;
+}
+.scrollTop.active {
+    bottom: 40px;
+    visibility: visible;
+    opacity: 1;
+
+}

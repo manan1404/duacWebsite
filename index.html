@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DUAC | Delhi Urban Art Commission | Home</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <script src="https://kit.fontawesome.com/0a23ba7979.js" crossorigin="anonymous"></script>
+  <link rel="shortcut icon" type="image/x-icon" href="favicon-512x512.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="container mb-3 text-center">
+    <img src="duac.jpg" style="margin-top: 10px;" class="img-fluid" alt="DUAC Logo">
+  </div>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">DUAC</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="about.html">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="contact.html">Contact Us</a>
+          </li>
+        </ul>
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+        <div class="mx-2">
+          <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+          <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#signupModal">Sign Up</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Login Modal -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="loginModalLabel">Login to DUAC</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Email address</label>
+              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+              <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label">Password</label>
+              <input type="password" class="form-control" id="exampleInputPassword1">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sign Up Modal -->
+  <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="signupModalLabel">Get a DUAC Account</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="fname" class="form-label">First Name</label>
+              <input type="text" class="form-control" id="fname">
+            </div>
+            <div class="mb-3">
+              <label for="lname" class="form-label">Last Name</label>
+              <input type="text" class="form-control" id="lname">
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Email address</label>
+              <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+              <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label">Password</label>
+              <input type="password" class="form-control" id="exampleInputPassword1">
+            </div>
+            <div class="mb-3">
+              <label for="cexampleInputPassword1" class="form-label">Confirm Password</label>
+              <input type="password" class="form-control" id="cexampleInputPassword1">
+            </div>
+            <button type="submit" class="btn btn-primary">Create Account</button>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container mt-4">
+    <div id="carouselExampleAutoplaying" class="carousel slide carousel-fade" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="DelhiGreenways.jpg" class="d-block w-100 img-fluid" alt="Delhi Greenways">
+          <div class="carousel-caption">
+            <h3><i>Delhi Greenways</i></h3>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="HariNagarGreens.jpg" class="d-block w-100 img-fluid" alt="Hari Nagar Greens">
+          <div class="carousel-caption">
+            <h3><i>Hari Nagar Greens</i></h3>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="HumayunTomb.jpg" class="d-block w-100 img-fluid" alt="Humayun Tomb">
+          <div class="carousel-caption">
+            <h3><i>Humayun Tomb</i></h3>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="QutubMinar.jpg" class="d-block w-100 img-fluid" alt="Qutub Minar">
+          <div class="carousel-caption">
+            <h3><i>Qutub Minar</i></h3>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="IndiaHabitatCentre.jpg" class="d-block w-100 img-fluid" alt="India Habitat Centre">
+          <div class="carousel-caption">
+            <h3><i>India Habitat Centre</i></h3>
+          </div>
+        </div>
+        <div class="carousel-item">
+          <img src="DUACoffice.jpg" class="d-block w-100 img-fluid" alt="DUAC Office">
+          <div class="carousel-caption">
+            <h3><i>DUAC Office</i></h3>
+          </div>
+        </div>
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+        data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+        data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+  </div>
+  <br><br>
+
+  <div class="container my-6">
+    <div class="row mb-10">
+      <div class="col-md-12">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+          <div class="col-auto d-none d-lg-block">
+            <img src="ajitsir.jpg" class="bd-placeholder-img" width="200" height="250" alt="Ajit Pai">
+            <p class="text-center"><strong>Ajit Pai</strong><br>Chairman, DUAC</p>
+          </div>
+          <div class="col p-4 d-flex flex-column position-static">
+            <strong class="d-inline-block mb-2 text-primary-emphasis">Message</strong>
+            <h3 class="mb-0">From the Chairman...</h3>
+            <div class="mb-1 text-body-secondary">Oct 07, 2023</div>
+            <input type="checkbox" id="ch">
+            <p class="card-text mb-auto">
+              The Delhi Urban Art Commission (DUAC) was established by an Act of the Parliament in 1973 to "advise the
+              Government of India in the matter of preserving, developing, and maintaining the aesthetic quality of
+              urban
+              and environmental design within Delhi and to provide advice and guidance to any local body in respect of
+              any
+              project of building operations or engineering operations or any development proposal which affects or is
+              likely to affect the skyline or the aesthetic quality of the surroundings or any public amenity provided
+              therein.” The Commission is entrusted with three roles (i) Policy Advisor to the Government of India, (ii)
+              Regulatory
+            </p>
+            <div class="content">
+              Body and (iii) Think Tank.
+
+              As the DUAC approaches its 50th anniversary, the relevance of the institution has never been greater. The
+              mandate of preserving, developing, and maintaining the aesthetic quality of Delhi’s urban and
+              environmental
+              design is being debated by more of Delhi’s and the nation’s inhabitants than ever before.
+
+              In recent years the DUAC has delivered enabling and foundational blocks that will serve to improve
+              delivery
+              on its mandate: (i) Prepared the Unified Building Bye Laws (UBBL 2016) for Delhi to contemporize bye laws
+              set in 1983, (ii) Prepared the draft of the Public Art Policy and Guidelines, (iii) Streamlined the
+              process
+              for DUAC approvals by commissioning the Online Proposal Assessment & Approval System (OPAAS), (iv)
+              Prepared
+              draft Lutyens Bungalow Zone (LBZ ) guidelines in 2019, and (v) Recommended Dynamic Parking Norms (DPN)
+              that
+              streamline many of the anomalies in vehicular parking in Delhi.
+
+              To address criticism of arbitrariness and subjectivity in DUAC decisions on the large number of proposals
+              that come to it for approval, criteria was developed and placed on the DUAC website for project proponents
+              to become aware of what the DUAC is looking for. This brings greater objectivity, reduces uncertainty, and
+              helps architects make comprehensive submissions.
+
+              Aesthetics remains a matter of subjectivity but together we can ensure that quality of proposals improve
+              and
+              proportion of rejections are minimized. The DUAC intends to catalyze public discourse on relevant subjects
+              to enhance the quality of submissions.
+
+              Over the past decade, the DUAC has conducted 77 site-specific studies to address specific problems in the
+              city. The Commission looks forward to finding the method and means to implementing the best of these in
+              its
+              current tenure. Three personal priorities are (i) Improving the quality and useability of green areas,
+              (ii)
+              Implementing a sustainable model for upgrading currently informal urban development, and (iii) Renewing
+              the
+              water bodies and waterways of the city while improving water resource management.
+
+              Delhi is poised to become the world’s largest urban agglomeration this decade. With your active support we
+              can also make it the most desirable urban destination for residents, workers, and tourists within the same
+              time frame.
+
+              We look forward to your ideas and support to provide Delhi a cleaner, greener, and more beautiful
+              tomorrow!
+              <br>
+
+              Sincerely,<br>
+              <strong> Ajit Pai</strong><br>
+              Chairman, Delhi Urban Art Commission
+              <label class="msglabel" for="ch">Show less</label>
+            </div>
+            <label class="msglabel" for="ch">Read more</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-wrappper section-img-bg2"
+      data-background="https://img.freepik.com/free-photo/bleached-wood-textured-design-background_53876-160561.jpg?w=1380&t=st=1696786655~exp=1696787255~hmac=f8afc7d7c1c41b16bf3e68be02b1d68d4e98c7a9c188bd6cf462fc94dd7b1cb6"
+      style="background-image: url(https://img.freepik.com/free-photo/bleached-wood-textured-design-background_53876-160561.jpg?w=1380&t=st=1696786655~exp=1696787255~hmac=f8afc7d7c1c41b16bf3e68be02b1d68d4e98c7a9c188bd6cf462fc94dd7b1cb6);">
+      <div class="footer-area footer-padding">
+        <div class="container">
+          <div class="row ">
+
+            <div class="col-sm-2">
+              <div class="single-footer-caption mb-20">
+                <div class="footer-tittle">
+                  <h4>Important Links</h4>
+                  <ul>
+                    <li><a href="http://mohua.gov.in/index.php">Ministry of Housing and Urban Affairs</a></li>
+                    <li><a href="https://dda.org.in/">DDA</a></li>
+                    <li><a href="https://www.ndmc.gov.in/">NDMC</a></li>
+                    <li><a href="https://mcdonline.nic.in/">MCD</a></li>
+                    <li><a href="http://www.delhimetrorail.com/">DMRC</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-sm-7 text-center">
+              <div class="single-footer-caption">
+                <div class="single-footer-caption mb-30">
+
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3503.336326617003!2d77.22337151440614!3d28.58968549277113!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce2ed9be678c1%3A0x73a4fc8f2e1087a6!2sIndia%20Habitat%20Centre!5e0!3m2!1sen!2sin!4v1623304273619!5m2!1sen!2sin"
+                    width="95%" height="300" style="border: 0;" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+              </div>
+            </div>
+
+
+
+            <div class="col-sm-3" style="padding-left: 50px;">
+              <div class="single-footer-caption mb-20" id="office">
+                <div class="footer-tittle right-caption">
+                  <h4 class="blink-animation">Office</h4>
+                  <ul class="mb-20">
+                    <li><a style="text-decoration: none; color: black; font-weight: bold;">Secretary</a></li>
+                    <li>
+                      Delhi Urban Art Commission<br>
+                      Core-6A,UG &amp; First Floor,<br>India Habitat Centre,<br>Lodhi Road,<br>New Delhi-110003
+                    </li>
+                    <li><a style="text-decoration: none; color: black;">Phone: 011-24619593</a></li>
+                    <li><a href="mailto:duac@gov.in" style="text-decoration: none; color: black;">Email:
+                        duac[at]gov[dot]in</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom-area">
+        <div class="container">
+          <div class="">
+            <div class="row d-flex align-items-center">
+              <div class="col-xl-12 ">
+                <div class="footer-copy-right">
+                  <p>
+
+                    Copyright
+                    ©
+                    <script>document.write(new Date().getFullYear());</script>
+                    All rights reserved |
+                    This website is made by <a href="https://itdivine.com" target="_blank"
+                      rel="nofollow noopener">&nbsp;ITDivine</a>
+                    <i class="fa fa-heart color-danger" aria-hidden="true"></i>
+
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <div class="scrollTop" onclick="scrollToTop();">
+    <i class="fas fa-level-up-alt"></i>
+  </div>
+  <script type="text/javascript">
+    window.addEventListener('scroll', function () {
+      var scroll = document.querySelector('.scrollTop');
+      scroll.classList.toggle("active", window.scrollY > 500)
+    })
+
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      })
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+    integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
