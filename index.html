@@ -145,6 +145,90 @@
 <script async defer src="https://apis.google.com/js/api.js" onload="onApiLoad()"></script>
 
 <!--   ____________________________ -->
+
+  <!-- File Upload Modal -->
+<!-- <div class="modal fade" id="fileUploadModal" tabindex="-1" aria-labelledby="fileUploadModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="fileUploadModalLabel">Upload Document</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="fileInput" class="form-label">Select Document</label>
+            <input type="file" class="form-control" id="fileInput" name="file" accept=".doc, .docx, .pdf, .dwf">
+          </div>
+          <img id="previewImage" alt="File Preview" style="max-width: 100%; max-height: 300px;">
+          <button type="button" class="btn btn-info" onclick="previewFile()">Preview</button>
+          <button type="button" class="btn btn-primary" onclick="submitDoc()">Submit</button>
+          <button type="button" class="btn btn-secondary" onclick="cancelFile()">Cancel</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<script>
+  function submitDoc() {
+    var fileInput = document.getElementById('fileInput');
+
+    if (fileInput.files.length > 0) {
+      var formData = new FormData();
+      formData.append('file', fileInput.files[0]);
+
+      fetch('your-server-endpoint', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Server response:', data);
+        alert('Document submitted successfully!');
+      })
+      .catch(error => {
+        console.error('Error submitting document:', error);
+        alert('Error submitting document. Please try again.');
+      });
+    } else {
+      alert('Please select a document before submitting.');
+    }
+  }
+
+  function previewFile() {
+    var fileInput = document.getElementById('fileInput');
+    var previewImage = document.getElementById('previewImage');
+
+    if (fileInput.files.length > 0) {
+      var file = fileInput.files[0];
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        previewImage.src = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
+    } else {
+      alert('Please select a document for preview.');
+    }
+  }
+
+  function cancelFile() {
+    var fileInput = document.getElementById('fileInput');
+    fileInput.value = ''; // Reset the input element value
+    var previewImage = document.getElementById('previewImage');
+    previewImage.src = ''; // Reset the preview image source
+  }
+</script>
+ -->
   
   
   <div class="container mt-4">
