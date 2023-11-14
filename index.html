@@ -61,7 +61,7 @@
           <img id="previewImage" alt="File Preview" style="max-width: 100%; max-height: 300px;">
           <button type="button" class="btn btn-info" onclick="previewFile()">Preview</button>
           <button type="button" class="btn btn-primary" onclick="submitDoc()">Submit</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-secondary" onclick="cancelFile()">Cancel</button>
         </form>
       </div>
       <div class="modal-footer">
@@ -71,7 +71,7 @@
   </div>
 </div>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
@@ -117,6 +117,13 @@
     } else {
       alert('Please select a document for preview.');
     }
+  }
+
+  function cancelFile() {
+    var fileInput = document.getElementById('fileInput');
+    fileInput.value = '';
+    var previewImage = document.getElementById('previewImage');
+    previewImage.src = '';
   }
 </script>
 
