@@ -81,35 +81,6 @@
 <script src="https://fengyuanchen.github.io/viewerjs/viewer.js"></script>
 
 <script>
-  function submitDoc() {
-    var fileInput = document.getElementById('fileInput');
-
-    if (fileInput.files.length > 0) {
-      var formData = new FormData();
-      formData.append('file', fileInput.files[0]);
-
-      fetch('your-server-endpoint', {
-        method: 'POST',
-        body: formData,
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Server response:', data);
-        
-        // After successful submission, trigger the preview
-        previewUploadedFile(fileInput.files[0]);
-
-        alert('Document submitted successfully!');
-      })
-      .catch(error => {
-        console.error('Error submitting document:', error);
-        alert('Error submitting document. Please try again.');
-      });
-    } else {
-      alert('Please select a document before submitting.');
-    }
-  }
-
   function previewFile() {
     var fileInput = document.getElementById('fileInput');
     var pdfPreview = document.getElementById('pdfPreview');
@@ -138,6 +109,18 @@
       }
     } else {
       alert('Please select a document for preview.');
+    }
+  }
+
+  function submitDoc() {
+    var fileInput = document.getElementById('fileInput');
+
+    if (fileInput.files.length > 0) {
+      // Implement your submit logic here
+      // You can optionally preview the file again before submission
+      // previewFile();
+    } else {
+      alert('Please select a document before submitting.');
     }
   }
 
