@@ -59,8 +59,8 @@
             <input type="file" class="form-control" id="fileInput" name="file" accept=".doc, .docx, .pdf, .dwf">
           </div>
           <div id="previewContainer">
-            <!-- Container for PDF preview using viewer.js -->
-            <div id="pdfPreview"></div>
+            <!-- Container for PDF preview using PDF.js -->
+            <canvas id="pdfViewer"></canvas>
           </div>
           <button type="button" class="btn btn-info" onclick="previewFile()">Preview</button>
           <button type="button" class="btn btn-primary" onclick="submitDoc()">Submit</button>
@@ -77,13 +77,58 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.js"></script>
-<script src="https://fengyuanchen.github.io/viewerjs/viewer.js"></script>
+<script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
 
 <script>
+  $("#fileInput").on("change", function (e) {
+    var file = e.target.files[0];
+    if (file.type == "application/pdf") {
+      var fileReader = new FileReader();
+      fileReader.onload = function () {
+        var pdfData = new Uint8Array(this.result);
+        // Using DocumentInitParameters object to load binary data.
+        var loadingTask = pdfjsLib.getDocument({ data: pdfData });
+        loadingTask.promise.then(
+          function (pdf) {
+            console.log('PDF loaded');
+
+            // Fetch the first page
+            var pageNumber = 1;
+            pdf.getPage(pageNumber).then(function (page) {
+              console.log('Page loaded');
+
+              var scale = 1.5;
+              var viewport = page.getViewport({ scale: scale });
+
+              // Prepare canvas using PDF page dimensions
+              var canvas = $("#pdfViewer")[0];
+              var context = canvas.getContext('2d');
+              canvas.height = viewport.height;
+              canvas.width = viewport.width;
+
+              // Render PDF page into canvas context
+              var renderContext = {
+                canvasContext: context,
+                viewport: viewport,
+              };
+              var renderTask = page.render(renderContext);
+              renderTask.promise.then(function () {
+                console.log('Page rendered');
+              });
+            });
+          },
+          function (reason) {
+            // PDF loading error
+            console.error(reason);
+          }
+        );
+      };
+      fileReader.readAsArrayBuffer(file);
+    }
+  });
+
   function previewFile() {
     var fileInput = document.getElementById('fileInput');
-    var pdfPreview = document.getElementById('pdfPreview');
     var previewContainer = document.getElementById('previewContainer');
 
     if (fileInput.files.length > 0) {
@@ -91,20 +136,10 @@
       var fileExtension = file.name.split('.').pop().toLowerCase();
 
       if (fileExtension === 'pdf') {
-        // If the selected file is a PDF, use viewer.js to display the preview
+        // If the selected file is a PDF, show the preview container
         previewContainer.style.display = 'block';
-        pdfPreview.innerHTML = ''; // Clear previous content
-        var viewer = new Viewer(pdfPreview, {
-          inline: true,
-          url: URL.createObjectURL(file),
-        });
-      } else if (['doc', 'docx', 'dwf'].includes(fileExtension)) {
-        // For unsupported file types, show an alert
-        alert('Preview is not supported for this file type.');
       } else {
-        // For other file types, reset the preview
-        pdfPreview.innerHTML = '';
-        previewContainer.style.display = 'none';
+        // For unsupported file types, show an alert
         alert('Preview is available only for PDF files.');
       }
     } else {
@@ -117,8 +152,7 @@
 
     if (fileInput.files.length > 0) {
       // Implement your submit logic here
-      // You can optionally preview the file again before submission
-      // previewFile();
+      alert('Document submitted successfully!');
     } else {
       alert('Please select a document before submitting.');
     }
@@ -126,12 +160,13 @@
 
   function cancelFile() {
     var fileInput = document.getElementById('fileInput');
-    var pdfPreview = document.getElementById('pdfPreview');
     var previewContainer = document.getElementById('previewContainer');
+    var canvas = $("#pdfViewer")[0];
+    var context = canvas.getContext('2d');
 
     fileInput.value = ''; // Reset the input element value
-    pdfPreview.innerHTML = ''; // Reset the PDF preview content
     previewContainer.style.display = 'none'; // Hide the preview container
+    context.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
   }
 </script>
 
