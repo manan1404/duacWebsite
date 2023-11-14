@@ -5,11 +5,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>DUAC | Delhi Urban Art Commission | Home</title>
+  <script src="https://apis.google.com/js/api.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <script src="https://kit.fontawesome.com/0a23ba7979.js" crossorigin="anonymous"></script>
   <link rel="shortcut icon" type="image/x-icon" href="favicon-512x512.png">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
 <body>
@@ -44,6 +46,7 @@
     </div>
   </nav>
 
+<!--   yaha abhi likhna hai -->
   <!-- File Upload Modal -->
 <div class="modal fade" id="fileUploadModal" tabindex="-1" aria-labelledby="fileUploadModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -58,11 +61,12 @@
             <label for="fileInput" class="form-label">Select Document</label>
             <input type="file" class="form-control" id="fileInput" name="file" accept=".doc, .docx, .pdf, .dwf">
           </div>
-          <div id="previewContainer">
-            <!-- Container for PDF preview using PDF.js -->
-            <canvas id="pdfViewer"></canvas>
+          <div id="pickerContainer">
+            <button type="button" class="btn btn-info" onclick="openPicker()">Open Google Picker</button>
           </div>
-          <button type="button" class="btn btn-info" onclick="openGooglePicker()">Select from Google Drive</button>
+          <div id="previewContainer" style="display: none;">
+            <iframe id="pdfView" style="width: 100%; height: 600px;"></iframe>
+          </div>
           <button type="button" class="btn btn-primary" onclick="submitDoc()">Submit</button>
           <button type="button" class="btn btn-secondary" onclick="cancelFile()">Cancel</button>
         </form>
@@ -73,107 +77,76 @@
     </div>
   </div>
 </div>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
-
 <script>
-  function previewFile(file) {
-    var pdfViewer = document.getElementById('pdfViewer');
-    var previewContainer = document.getElementById('previewContainer');
+  var pickerApiLoaded = false;
+  var oauthToken;
 
-    if (file) {
-      var fileExtension = file.name.split('.').pop().toLowerCase();
+  function onApiLoad() {
+    gapi.load('auth', { 'callback': onAuthApiLoad });
+    gapi.load('picker', { 'callback': onPickerApiLoad });
+  }
 
-      if (fileExtension === 'pdf') {
-        // If the selected file is a PDF, show the preview container
-        previewContainer.style.display = 'block';
+  function onAuthApiLoad() {
+    window.gapi.auth.authorize(
+      { client_id: 'YOUR_CLIENT_ID', scope: 'https://www.googleapis.com/auth/drive.readonly', immediate: false },
+      handleAuthResult
+    );
+  }
 
-        // Using DocumentInitParameters object to load binary data.
-        var fileReader = new FileReader();
-        fileReader.onload = function () {
-          var pdfData = new Uint8Array(this.result);
-          pdfjsLib.getDocument({ data: pdfData }).promise.then(
-            function (pdf) {
-              console.log('PDF loaded');
+  function onPickerApiLoad() {
+    pickerApiLoaded = true;
+  }
 
-              // Fetch the first page
-              var pageNumber = 1;
-              pdf.getPage(pageNumber).then(function (page) {
-                console.log('Page loaded');
-
-                var scale = 1.5;
-                var viewport = page.getViewport({ scale: scale });
-
-                // Prepare canvas using PDF page dimensions
-                var context = pdfViewer.getContext('2d');
-                pdfViewer.height = viewport.height;
-                pdfViewer.width = viewport.width;
-
-                // Render PDF page into canvas context
-                var renderContext = {
-                  canvasContext: context,
-                  viewport: viewport,
-                };
-                page.render(renderContext).promise.then(function () {
-                  console.log('Page rendered');
-                });
-              });
-            },
-            function (reason) {
-              // PDF loading error
-              console.error(reason);
-              alert('Error loading PDF. Please try again.');
-            }
-          );
-        };
-        fileReader.readAsArrayBuffer(file);
-      } else {
-        // For unsupported file types, show an alert
-        alert('Preview is available only for PDF files.');
-      }
+  function handleAuthResult(authResult) {
+    if (authResult && !authResult.error) {
+      oauthToken = authResult.access_token;
     } else {
-      alert('Please select a document for preview.');
+      alert('Authentication failed. Please try again.');
     }
   }
 
-  function openGooglePicker() {
-    // Implement the Google Picker API logic here
-    // Set up your Google Picker API configuration
-    var picker = new google.picker.PickerBuilder()
-      .addView(new google.picker.DocsView())
-      .setOAuthToken(oauthToken)
-      .setDeveloperKey(apiKey)
-      .setCallback(pickerCallback)
-      .build();
-    picker.setVisible(true);
+  function openPicker() {
+    if (pickerApiLoaded && oauthToken) {
+      var picker = new google.picker.PickerBuilder()
+        .enableFeature(google.picker.Feature.NAV_HIDDEN)
+        .setOAuthToken(oauthToken)
+        .addView(new google.picker.DocsView())
+        .setCallback(pickerCallback)
+        .build();
+      picker.setVisible(true);
+    } else {
+      alert('Google Picker API not loaded or authentication failed.');
+    }
   }
 
   function pickerCallback(data) {
-    if (data.action == google.picker.Action.PICKED) {
-      var selectedFile = data.docs[0];
-      previewFile(selectedFile);
+    if (data.action === google.picker.Action.PICKED) {
+      var fileId = data.docs[0].id;
+      var previewUrl = 'https://drive.google.com/file/d/' + fileId + '/preview';
+      document.getElementById('pdfView').src = previewUrl;
+      document.getElementById('previewContainer').style.display = 'block';
     }
   }
 
   function submitDoc() {
-    // Implement your submit logic here
-    alert('Document submitted successfully!');
+    // Add your document submission logic here
+    alert('Document submitted!');
   }
 
   function cancelFile() {
-    var previewContainer = document.getElementById('previewContainer');
-    var pdfViewer = document.getElementById('pdfViewer');
-
-    pdfViewer.getContext('2d').clearRect(0, 0, pdfViewer.width, pdfViewer.height);
-    previewContainer.style.display = 'none'; // Hide the preview container
+    document.getElementById('fileInput').value = ''; // Reset the input element value
+    document.getElementById('pdfView').src = ''; // Reset the PDF preview source
+    document.getElementById('previewContainer').style.display = 'none'; // Hide the preview container
   }
 </script>
+<script async defer src="https://apis.google.com/js/api.js" onload="onApiLoad()"></script>
 
-<script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
-
+<!--   ____________________________ -->
+  
+  
   <div class="container mt-4">
     <div id="carouselExampleAutoplaying" class="carousel slide carousel-fade" data-bs-ride="carousel">
       <div class="carousel-inner">
