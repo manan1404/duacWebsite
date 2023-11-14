@@ -59,7 +59,7 @@
             <input type="file" class="form-control" id="fileInput" name="file" accept=".doc, .docx, .pdf, .dwf">
           </div>
           <div id="previewContainer">
-            <iframe id="filePreview" width="100%" height="500px" style="border: none;"></iframe>
+            <div id="pdfPreview"></div>
           </div>
           <button type="button" class="btn btn-info" onclick="previewFile()">Preview</button>
           <button type="button" class="btn btn-primary" onclick="submitDoc()">Submit</button>
@@ -76,6 +76,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.js"></script>
+<script src="https://fengyuanchen.github.io/viewerjs/viewer.js"></script>
 
 <script>
   function submitDoc() {
@@ -105,16 +107,25 @@
 
   function previewFile() {
     var fileInput = document.getElementById('fileInput');
-    var filePreview = document.getElementById('filePreview');
+    var pdfPreview = document.getElementById('pdfPreview');
     var previewContainer = document.getElementById('previewContainer');
 
     if (fileInput.files.length > 0) {
       var file = fileInput.files[0];
       var fileExtension = file.name.split('.').pop().toLowerCase();
+
       if (fileExtension === 'pdf') {
         previewContainer.style.display = 'block';
-        filePreview.src = 'https://docs.google.com/gview?url=' + encodeURIComponent(URL.createObjectURL(file)) + '&embedded=true';
+        pdfPreview.innerHTML = '';
+        var viewer = new Viewer(pdfPreview, {
+          inline: true,
+          url: URL.createObjectURL(file),
+        });
+      } else if (['doc', 'docx', 'dwf'].includes(fileExtension)) {
+        alert('Preview is not supported for this file type.');
       } else {
+        pdfPreview.innerHTML = '';
+        previewContainer.style.display = 'none';
         alert('Preview is available only for PDF files.');
       }
     } else {
@@ -124,11 +135,11 @@
 
   function cancelFile() {
     var fileInput = document.getElementById('fileInput');
-    var filePreview = document.getElementById('filePreview');
+    var pdfPreview = document.getElementById('pdfPreview');
     var previewContainer = document.getElementById('previewContainer');
 
     fileInput.value = '';
-    filePreview.src = '';
+    pdfPreview.innerHTML = '';
     previewContainer.style.display = 'none';
   }
 </script>
