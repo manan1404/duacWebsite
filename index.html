@@ -62,7 +62,7 @@
             <!-- Container for PDF preview using PDF.js -->
             <canvas id="pdfViewer"></canvas>
           </div>
-          <button type="button" class="btn btn-info" onclick="previewFile()">Preview</button>
+          <button type="button" class="btn btn-info" onclick="openGooglePicker()">Select from Google Drive</button>
           <button type="button" class="btn btn-primary" onclick="submitDoc()">Submit</button>
           <button type="button" class="btn btn-secondary" onclick="cancelFile()">Cancel</button>
         </form>
@@ -80,64 +80,56 @@
 <script src="https://mozilla.github.io/pdf.js/build/pdf.js"></script>
 
 <script>
-  $("#fileInput").on("change", function (e) {
-    var file = e.target.files[0];
-    if (file.type == "application/pdf") {
-      var fileReader = new FileReader();
-      fileReader.onload = function () {
-        var pdfData = new Uint8Array(this.result);
-        // Using DocumentInitParameters object to load binary data.
-        var loadingTask = pdfjsLib.getDocument({ data: pdfData });
-        loadingTask.promise.then(
-          function (pdf) {
-            console.log('PDF loaded');
-
-            // Fetch the first page
-            var pageNumber = 1;
-            pdf.getPage(pageNumber).then(function (page) {
-              console.log('Page loaded');
-
-              var scale = 1.5;
-              var viewport = page.getViewport({ scale: scale });
-
-              // Prepare canvas using PDF page dimensions
-              var canvas = $("#pdfViewer")[0];
-              var context = canvas.getContext('2d');
-              canvas.height = viewport.height;
-              canvas.width = viewport.width;
-
-              // Render PDF page into canvas context
-              var renderContext = {
-                canvasContext: context,
-                viewport: viewport,
-              };
-              var renderTask = page.render(renderContext);
-              renderTask.promise.then(function () {
-                console.log('Page rendered');
-              });
-            });
-          },
-          function (reason) {
-            // PDF loading error
-            console.error(reason);
-          }
-        );
-      };
-      fileReader.readAsArrayBuffer(file);
-    }
-  });
-
-  function previewFile() {
-    var fileInput = document.getElementById('fileInput');
+  function previewFile(file) {
+    var pdfViewer = document.getElementById('pdfViewer');
     var previewContainer = document.getElementById('previewContainer');
 
-    if (fileInput.files.length > 0) {
-      var file = fileInput.files[0];
+    if (file) {
       var fileExtension = file.name.split('.').pop().toLowerCase();
 
       if (fileExtension === 'pdf') {
         // If the selected file is a PDF, show the preview container
         previewContainer.style.display = 'block';
+
+        // Using DocumentInitParameters object to load binary data.
+        var fileReader = new FileReader();
+        fileReader.onload = function () {
+          var pdfData = new Uint8Array(this.result);
+          pdfjsLib.getDocument({ data: pdfData }).promise.then(
+            function (pdf) {
+              console.log('PDF loaded');
+
+              // Fetch the first page
+              var pageNumber = 1;
+              pdf.getPage(pageNumber).then(function (page) {
+                console.log('Page loaded');
+
+                var scale = 1.5;
+                var viewport = page.getViewport({ scale: scale });
+
+                // Prepare canvas using PDF page dimensions
+                var context = pdfViewer.getContext('2d');
+                pdfViewer.height = viewport.height;
+                pdfViewer.width = viewport.width;
+
+                // Render PDF page into canvas context
+                var renderContext = {
+                  canvasContext: context,
+                  viewport: viewport,
+                };
+                page.render(renderContext).promise.then(function () {
+                  console.log('Page rendered');
+                });
+              });
+            },
+            function (reason) {
+              // PDF loading error
+              console.error(reason);
+              alert('Error loading PDF. Please try again.');
+            }
+          );
+        };
+        fileReader.readAsArrayBuffer(file);
       } else {
         // For unsupported file types, show an alert
         alert('Preview is available only for PDF files.');
@@ -147,28 +139,40 @@
     }
   }
 
-  function submitDoc() {
-    var fileInput = document.getElementById('fileInput');
+  function openGooglePicker() {
+    // Implement the Google Picker API logic here
+    // Set up your Google Picker API configuration
+    var picker = new google.picker.PickerBuilder()
+      .addView(new google.picker.DocsView())
+      .setOAuthToken(oauthToken)
+      .setDeveloperKey(apiKey)
+      .setCallback(pickerCallback)
+      .build();
+    picker.setVisible(true);
+  }
 
-    if (fileInput.files.length > 0) {
-      // Implement your submit logic here
-      alert('Document submitted successfully!');
-    } else {
-      alert('Please select a document before submitting.');
+  function pickerCallback(data) {
+    if (data.action == google.picker.Action.PICKED) {
+      var selectedFile = data.docs[0];
+      previewFile(selectedFile);
     }
   }
 
-  function cancelFile() {
-    var fileInput = document.getElementById('fileInput');
-    var previewContainer = document.getElementById('previewContainer');
-    var canvas = $("#pdfViewer")[0];
-    var context = canvas.getContext('2d');
+  function submitDoc() {
+    // Implement your submit logic here
+    alert('Document submitted successfully!');
+  }
 
-    fileInput.value = ''; // Reset the input element value
+  function cancelFile() {
+    var previewContainer = document.getElementById('previewContainer');
+    var pdfViewer = document.getElementById('pdfViewer');
+
+    pdfViewer.getContext('2d').clearRect(0, 0, pdfViewer.width, pdfViewer.height);
     previewContainer.style.display = 'none'; // Hide the preview container
-    context.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
   }
 </script>
+
+<script src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
 
   <div class="container mt-4">
     <div id="carouselExampleAutoplaying" class="carousel slide carousel-fade" data-bs-ride="carousel">
