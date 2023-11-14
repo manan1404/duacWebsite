@@ -59,8 +59,7 @@
             <input type="file" class="form-control" id="fileInput" name="file" accept=".doc, .docx, .pdf, .dwf">
           </div>
           <div id="previewContainer">
-            <!-- Container for file type preview -->
-            <img id="filePreview" alt="File Preview" style="max-width: 100%; max-height: 300px;">
+            <div id="pdfPreview"></div>
           </div>
           <button type="button" class="btn btn-info" onclick="previewFile()">Preview</button>
           <button type="button" class="btn btn-primary" onclick="submitDoc()">Submit</button>
@@ -77,6 +76,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.js"></script>
+<script src="https://fengyuanchen.github.io/viewerjs/viewer.js"></script>
 
 <script>
   function submitDoc() {
@@ -106,19 +107,27 @@
 
   function previewFile() {
     var fileInput = document.getElementById('fileInput');
-    var filePreview = document.getElementById('filePreview');
+    var pdfPreview = document.getElementById('pdfPreview');
     var previewContainer = document.getElementById('previewContainer');
 
     if (fileInput.files.length > 0) {
       var file = fileInput.files[0];
+      var fileExtension = file.name.split('.').pop().toLowerCase();
 
-      var reader = new FileReader();
-      reader.onload = function (e) {
-        filePreview.src = e.target.result;
+      if (fileExtension === 'pdf') {
         previewContainer.style.display = 'block';
-      };
-
-      reader.readAsDataURL(file);
+        pdfPreview.innerHTML = '';
+        var viewer = new Viewer(pdfPreview, {
+          inline: true,
+          url: URL.createObjectURL(file),
+        });
+      } else if (['doc', 'docx', 'dwf'].includes(fileExtension)) {
+        alert('Preview is not supported for this file type.');
+      } else {
+        pdfPreview.innerHTML = '';
+        previewContainer.style.display = 'none';
+        alert('Preview is available only for PDF files.');
+      }
     } else {
       alert('Please select a document for preview.');
     }
@@ -126,11 +135,11 @@
 
   function cancelFile() {
     var fileInput = document.getElementById('fileInput');
-    var filePreview = document.getElementById('filePreview');
+    var pdfPreview = document.getElementById('pdfPreview');
     var previewContainer = document.getElementById('previewContainer');
 
     fileInput.value = '';
-    filePreview.src = '';
+    pdfPreview.innerHTML = '';
     previewContainer.style.display = 'none';
   }
 </script>
