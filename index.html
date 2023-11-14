@@ -59,6 +59,7 @@
             <input type="file" class="form-control" id="fileInput" name="file" accept=".doc, .docx, .pdf, .dwf">
           </div>
           <div id="previewContainer">
+            <!-- Container for PDF preview using viewer.js -->
             <div id="pdfPreview"></div>
           </div>
           <button type="button" class="btn btn-info" onclick="previewFile()">Preview</button>
@@ -81,62 +82,73 @@
 
 <script>
   function submitDoc() {
-  var fileInput = document.getElementById('fileInput');
+    var fileInput = document.getElementById('fileInput');
 
-  if (fileInput.files.length > 0) {
-    var formData = new FormData();
-    formData.append('file', fileInput.files[0]);
+    if (fileInput.files.length > 0) {
+      var formData = new FormData();
+      formData.append('file', fileInput.files[0]);
 
-    fetch('your-server-endpoint', {
-      method: 'POST',
-      body: formData,
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Server response:', data);
+      fetch('your-server-endpoint', {
+        method: 'POST',
+        body: formData,
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Server response:', data);
+        
+        // After successful submission, trigger the preview
+        previewUploadedFile(fileInput.files[0]);
 
-      // After successful submission, trigger the preview
-      previewUploadedFile(fileInput.files[0]);
-      
-      alert('Document submitted successfully!');
-    })
-    .catch(error => {
-      console.error('Error submitting document:', error);
-      alert('Error submitting document. Please try again.');
-    });
-  } else {
-    alert('Please select a document before submitting.');
+        alert('Document submitted successfully!');
+      })
+      .catch(error => {
+        console.error('Error submitting document:', error);
+        alert('Error submitting document. Please try again.');
+      });
+    } else {
+      alert('Please select a document before submitting.');
+    }
   }
-}
 
-// Function to preview the uploaded file
-function previewUploadedFile(file) {
-  var fileExtension = file.name.split('.').pop().toLowerCase();
-  var pdfPreview = document.getElementById('pdfPreview');
-  var previewContainer = document.getElementById('previewContainer');
+  function previewFile() {
+    var fileInput = document.getElementById('fileInput');
+    var pdfPreview = document.getElementById('pdfPreview');
+    var previewContainer = document.getElementById('previewContainer');
 
-  if (fileExtension === 'pdf') {
-    // If the submitted file is a PDF, use viewer.js to display the preview
-    previewContainer.style.display = 'block';
-    pdfPreview.innerHTML = ''; // Clear previous content
-    var viewer = new Viewer(pdfPreview, {
-      inline: true,
-      url: URL.createObjectURL(file),
-    });
-  } else {
-    // For unsupported file types, show an alert
-    alert('Preview is not supported for this file type.');
+    if (fileInput.files.length > 0) {
+      var file = fileInput.files[0];
+      var fileExtension = file.name.split('.').pop().toLowerCase();
+
+      if (fileExtension === 'pdf') {
+        // If the selected file is a PDF, use viewer.js to display the preview
+        previewContainer.style.display = 'block';
+        pdfPreview.innerHTML = ''; // Clear previous content
+        var viewer = new Viewer(pdfPreview, {
+          inline: true,
+          url: URL.createObjectURL(file),
+        });
+      } else if (['doc', 'docx', 'dwf'].includes(fileExtension)) {
+        // For unsupported file types, show an alert
+        alert('Preview is not supported for this file type.');
+      } else {
+        // For other file types, reset the preview
+        pdfPreview.innerHTML = '';
+        previewContainer.style.display = 'none';
+        alert('Preview is available only for PDF files.');
+      }
+    } else {
+      alert('Please select a document for preview.');
+    }
   }
-}
 
   function cancelFile() {
     var fileInput = document.getElementById('fileInput');
     var pdfPreview = document.getElementById('pdfPreview');
     var previewContainer = document.getElementById('previewContainer');
 
-    fileInput.value = '';
-    pdfPreview.innerHTML = '';
-    previewContainer.style.display = 'none';
+    fileInput.value = ''; // Reset the input element value
+    pdfPreview.innerHTML = ''; // Reset the PDF preview content
+    previewContainer.style.display = 'none'; // Hide the preview container
   }
 </script>
 
