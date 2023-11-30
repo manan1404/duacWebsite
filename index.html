@@ -204,22 +204,15 @@
   }
 
   function previewFile() {
-    var fileInput = document.getElementById('fileInput');
-    var previewImage = document.getElementById('previewImage');
+  var fileInput = document.getElementById("fileInput");
+  var display = URL.createObjectURL(fileInput.files[0]);
 
-    if (fileInput.files.length > 0) {
-      var file = fileInput.files[0];
-      var reader = new FileReader();
-
-      reader.onload = function (e) {
-        previewImage.src = e.target.result;
-      };
-
-      reader.readAsDataURL(file);
-    } else {
-      alert('Please select a document for preview.');
-    }
-  }
+  var newWindow = window.open("", "_blank", "width=1000px,height=800px");
+  newWindow.document.open();
+  newWindow.document.write(`<div style="height:100vh; width=100vw">
+    <embed src="${display}" height="100%" width="100%" />  </div>`);
+  newWindow.document.close();
+}
 
   function cancelFile() {
     var fileInput = document.getElementById('fileInput');
